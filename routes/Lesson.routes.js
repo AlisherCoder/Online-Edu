@@ -1,36 +1,37 @@
 import {Router} from "express";
-import { create, findAll, findBySeorch, findOne, pages, remove, update } from "../controllers/Comment.controller.js";
+import { create, findAll, findBySeorch, findOne, pages, remove, update } from "../controllers/Lesson.controller.js";
 
-const CommentRouter = Router();
+const LissonRouter = Router();
 
 
 /**
  * @swagger
  * tags:
- *   name: Comment
- *   description: Comment management endpoints
+ *   name: Lesson
+ *   description: Lesson management endpoints
  */
 
 /**
  * @swagger
- * /api/comment:
+ * /api/lesson:
  *   get:
- *     summary: Get all Comment
- *     tags: [Comment]
+ *     summary: Get all Lesson
+ *     tags: [Lesson]
  *     responses:
  *       200:
- *         description: All Comment
+ *         description: data
  *       401:
- *         description: Invalid request data
+ *         description: error
  */
-CommentRouter.get("/", findAll);
+LissonRouter.get("/", findAll);
+
 
 /**
  * @swagger
- * /api/comment/pages:
+ * /api/lesson/pages:
  *   get:
  *     summary: Get on query parameters
- *     tags: [Comment]
+ *     tags: [Lesson]
   *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -52,15 +53,15 @@ CommentRouter.get("/", findAll);
  *       401: 
  *         description: error
  */
-CommentRouter.get("/pages", pages);
+LissonRouter.get("/pages", pages);
 
 
 /**
  * @swagger
- * /api/comment/seorch:
+ * /api/lesson/seorch:
  *   get:
  *     summary: Get on seorch parameters
- *     tags: [Comment]
+ *     tags: [Lesson]
   *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -77,15 +78,15 @@ CommentRouter.get("/pages", pages);
  *       401: 
  *         description: error
  */
-CommentRouter.get("/seorch", findBySeorch);
+LissonRouter.get("/seorch", findBySeorch);
 
 
 /**
  * @swagger
- * /api/comment/{id}:
+ * /api/lesson/{id}:
  *   get:
- *     summary: Get one Comment
- *     tags: [Comment]
+ *     summary: Get one Lesson
+ *     tags: [Lesson]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -94,7 +95,7 @@ CommentRouter.get("/seorch", findBySeorch);
  *         schema:
  *           type: integer
  *         required: true
- *         description: Comment ID
+ *         description: Lesson ID
  *     responses:
  *       200:
  *         description: data
@@ -103,16 +104,15 @@ CommentRouter.get("/seorch", findBySeorch);
  *       401:
  *         description: error
  */
-CommentRouter.get("/:id", findOne);
-
+LissonRouter.get("/:id", findOne);
 
 
 /**
  * @swagger
- * /api/comment:
+ * /api/lesson:
  *   post:
  *     summary: creted
- *     tags: [Comment]
+ *     tags: [Lesson]
  *     requestBody:
  *       required: true
  *       content:
@@ -120,23 +120,19 @@ CommentRouter.get("/:id", findOne);
  *           schema:
  *             type: object
  *             required:
- *               - message
- *               - userId
+ *               - link
+ *               - description
  *               - courseId
- *               - star
  *             properties:
- *               message:
+ *               link:
  *                 type: string
- *                 example: "Zo'r"
- *               userId:
- *                 type: integer
- *                 example: 3
+ *                 example: "https://www.youtube.com/watch?v=MOsTpgKIGT4"
+ *               description:
+ *                 type: string
+ *                 example: "Bu kurs haqida malumod"
  *               courseId:
  *                 type: integer
  *                 example: 2
- *               star:
- *                 type: integer
- *                 example: 5
  *     responses:
  *       200:
  *         description: data
@@ -145,54 +141,52 @@ CommentRouter.get("/:id", findOne);
  *       500:
  *         description: deta baza error
  */
-CommentRouter.post("/", create);
+LissonRouter.post("/", create);
 
 
 /**
  * @swagger
- * /api/comment:
+ * /api/lesson:
  *   patch:
- *     summary: Update
- *     tags: [Comment]
+ *     summary: creted
+ *     tags: [Lesson]
  *     requestBody:
- *       required: false
+ *       required: optional
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             required:
- *               - message
- *               - userId
+ *               - link
+ *               - description
  *               - courseId
- *               - star
  *             properties:
- *               message:
+ *               link:
  *                 type: string
- *                 example: "Yahshi"
- *               userId:
- *                 type: integer
- *                 example: 3
+ *                 example: "https://www.youtube.com/watch?v=MOsTpgKIGT4"
+ *               description:
+ *                 type: string
+ *                 example: "Bu kurs haqida malumod"
  *               courseId:
  *                 type: integer
  *                 example: 2
- *               star:
- *                 type: integer
- *                 example: 5
  *     responses:
  *       200:
  *         description: data
  *       401:
  *         description: error
+ *       500:
+ *         description: deta baza error
  */
-CommentRouter.patch("/:id", update);
+LissonRouter.patch("/:id", update);
 
 
 /**
  * @swagger
- * /api/comment/{id}:
+ * /api/lesson/{id}:
  *   delete:
- *     summary: Get one Comment
- *     tags: [Comment]
+ *     summary: Get one Lesson
+ *     tags: [Lesson]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -201,14 +195,14 @@ CommentRouter.patch("/:id", update);
  *         schema:
  *           type: integer
  *         required: true
- *         description: Comment ID
+ *         description: Lesson ID
  *     responses:
  *       200:
  *         description: delete
  *       401:
  *         description: wrong delete error
  */
-CommentRouter.delete("/:id", remove);
+LissonRouter.delete("/:id", remove);
 
-export default CommentRouter;
+export default LissonRouter;
 

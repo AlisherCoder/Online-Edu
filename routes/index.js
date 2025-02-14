@@ -1,10 +1,10 @@
 import { Router } from "express";
 import CommentRouter from "./Comment.routes.js";
-import LissonRouter from "./Lisson.routes.js";
+import LissonRouter from "./Lesson.routes.js";
 
 const MainRouter = Router();
 
 MainRouter.use("/comment", CommentRouter);
-MainRouter.use("/lisson",LissonRouter);
+MainRouter.use("/lesson",LissonRouter);
 
 export default MainRouter;

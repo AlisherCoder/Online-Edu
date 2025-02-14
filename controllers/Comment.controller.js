@@ -1,12 +1,11 @@
 import Comment from "../models/comment.model.js";
+import Course from "../models/course.model.js";
+import User from "../models/user.model.js";
 import {CommentPOST, CommentPATCH} from "../validations/comment.validation.js"; 
 
 async function findAll (req,res) {
     try{
-        let All = await Comment.findAll()
-        if(!All){
-            return res.status(404).json({message: "Not Fount Comment"})
-        }
+        let All = await Comment.findAll({include: [User, Course]})
         res.status(200).json({data:All});
 
     }catch(e){
@@ -14,13 +13,34 @@ async function findAll (req,res) {
         console.log(e);
     }
 };
+async function pages(req,res) {
+   try{
+    let {limit, offset} = req.query;
+
+    limit = limit ? parseInt(limit) : 10;
+    offset = offset ? parseInt(offset) - 1 : 0;
+
+    let data = await Comment.findAll({
+        limit: limit,
+        offset: offset * limit
+    })
+    if(data.length == 0){
+        return res.status(404).json({message:"Not Fount"})
+    }
+    res.status(200).json({data});
+   }catch(e){
+    res.status(401).json({message: e.message})
+    console.log(e);
+   }
+};
 async function findOne (req,res) {
     try{
         let {id} = req.params;
-    let data = await Comment.findByPk(id)
+    let data = await Comment.findByPk(id, {include: [User, Course]})
     if(!data){
-        return res.status(200).json({data});
+        return res.status(404).json({message: "Not Fount Comment"});
     }
+    res.status(200).json({data});
     }catch(e){
         res.status(401).json({message: e.message})
         console.log(e);
@@ -38,7 +58,10 @@ async function findBySeorch (req,res) {
                 newquery[key[index]] = val
             }
         })
-        let data = await Comment.findAll({where:newquery});
+        let data = await Comment.findAll({where: newquery});
+        if(data.length == 0){
+            res.status(404).json({message: "Not fount"})
+        }
         res.status(200).json({data})
     }catch(e){
         res.status(401).json({message: e.message})
@@ -54,6 +77,7 @@ async function create (req,res) {
             return
         }
         let Createdata = await Comment.create(value);
+
         if(!Createdata){
         return res.status(500).json({message: "Bazaga saqlashda hatolig bor"});
         };
@@ -98,4 +122,4 @@ async function remove (req,res) {
    }
 };
 
-export {findAll, findOne, findBySeorch, create, update, remove};
+export {findAll, findOne, pages, findBySeorch, create, update, remove};

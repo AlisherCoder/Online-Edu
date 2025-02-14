@@ -1,13 +1,12 @@
+import Course from "../models/course.model.js";
 import Lesson from "../models/lesson.model.js";
-import {LessonPATCH, LessonPOST} from "../validations/Lesson.validate.js"; 
+import {LessonPATCH, LessonPOST} from "../validations/Lesson.validate.js";
+
 
 async function findAll (req,res) {
     try{
-        let All = await Lesson.findAll()
-        if(!All){
-            return res.status(404).json({message: "Not Fount Lesson"})
-        }
-        req.status(200).json({data:All});
+        let All = await Lesson.findAll({include:[Course]})
+        res.status(200).json({data:All});
 
     }catch(e){
         res.status(401).json({message: e.message})
@@ -17,15 +16,36 @@ async function findAll (req,res) {
 async function findOne (req,res) {
     try{
         let {id} = req.params;
-    let data = await Lesson.findByPk(id)
+    let data = await Lesson.findByPk(id,{include: [Course]})
     if(!data){
-        return res.status(200).json({data});
+        return res.status(404).json({message: "Not Fount Lesson"});
     }
+    res.status(200).json({data});
     }catch(e){
         res.status(401).json({message: e.message})
         console.log(e);
     }
 };
+async function pages(req,res) {
+    try{
+     let {limit, offset} = req.query;
+ 
+     limit = limit ? parseInt(limit) : 10;
+     offset = offset ? parseInt(offset) - 1 : 0;
+ 
+     let data = await Lesson.findAll({
+         limit: limit,
+         offset: offset * limit
+     })
+     if(data.length == 0){
+         return res.status(404).json({message:"Not Fount"})
+     }
+     res.status(200).json({data});
+    }catch(e){
+     res.status(401).json({message: e.message})
+     console.log(e);
+    }
+ };
 async function findBySeorch (req,res) {
     try{
         let query = req.query;
@@ -38,7 +58,10 @@ async function findBySeorch (req,res) {
                 newquery[key[index]] = val
             }
         })
-        let data = await Lesson.findAll({where:newquery});
+        let data = await Lesson.findAll({where: newquery});
+        if(data.length == 0){
+            res.status(401).json({message: "Not fount"})
+        }
         res.status(200).json({data})
     }catch(e){
         res.status(401).json({message: e.message})
@@ -76,7 +99,7 @@ async function update (req,res) {
         }
         let [data] = await Lesson.update(value, {where:{id}},)
         if(!data){
-            return res.status(401).json({message: "wrong update"})
+            return res.status(500).json({message: "wrong update"})
         }
         res.status(200).json({message: "Lesson update"})
     }catch(e){
@@ -98,4 +121,4 @@ async function remove (req,res) {
    }
 };
 
-export {findAll, findOne, findBySeorch, create, update, remove};
+export {findAll, findOne, pages, findBySeorch, create, update, remove};
