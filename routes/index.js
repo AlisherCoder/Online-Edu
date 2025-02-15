@@ -4,11 +4,11 @@ import LissonRouter from "./Lesson.routes.js";
 import categoryRoute from "./category.routes.js";
 import courseRoute from "./course.routes.js";
 
-const mainRoute = Router();
+const MainRouter = Router();
 
-mainRoute.use("/comment", CommentRouter);
-mainRoute.use("/lesson",LissonRouter);
-mainRoute.use("/category", categoryRoute);
-mainRoute.use("/course", courseRoute);
+MainRouter.use("/comment", CommentRouter);
+MainRouter.use("/lesson",LissonRouter);
+MainRouter.use("/category", categoryRoute);
+MainRouter.use("/course", courseRoute);
 
-export default mainRoute;
+export default MainRouter;

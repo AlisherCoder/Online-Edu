@@ -17,16 +17,12 @@ app.post("/upload", upload.single("file"), (req, res) => {
   res.send(`Fayl yuklandi: ${req.file.filename}`);
 });
 
-async function connection() {
-  try {
-    await sequelize.sync();
-    console.log("Connected database successfully ✔️");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${3000} ✔️`);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+async function bootstreb () {
+    await sequolizs.sync();
+    console.log("Db connetedc");
+    app.listen(Port, ()=>{
+        console.log(`Server started on port ${Port}`);
+    })
 }
 
-connection();
+bootstreb();
