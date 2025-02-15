@@ -1,4 +1,5 @@
 import express from "express";
+
 import sequolizs from "./config/db.js";
 import dotenv from "dotenv";
 import MainRouter from "./routes/index.js";
