@@ -8,7 +8,7 @@ const CommentRouter = Router();
  * @swagger
  * tags:
  *   name: Comment
- *   description: Comment management endpoints
+ *   description: Comment management endpoint
  */
 
 /**
