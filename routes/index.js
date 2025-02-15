@@ -8,9 +8,9 @@ import courseRoute from "./course.routes.js";
 const mainRoute = Router();
 
 mainRoute.use("/users", userRoute);
-mainRoute.use("/comment", CommentRouter);
-mainRoute.use("/lesson", lessonRouter);
-mainRoute.use("/category", categoryRoute);
-mainRoute.use("/course", courseRoute);
+mainRoute.use("/comments", CommentRouter);
+mainRoute.use("/lessons", lessonRouter);
+mainRoute.use("/categories", categoryRoute);
+mainRoute.use("/courses", courseRoute);
 
 export default mainRoute;

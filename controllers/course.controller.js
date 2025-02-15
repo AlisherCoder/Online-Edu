@@ -1,4 +1,3 @@
-import { message } from "telegraf/filters";
 import Category from "../models/category.model.js";
 import Course from "../models/course.model.js";
 import User from "../models/user.model.js";
@@ -15,7 +14,7 @@ async function findAll(req, res) {
          res.status(200).json({ message: "Course not found!" });
       }
    } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: error.message });
    }
 }
 
@@ -31,7 +30,7 @@ async function findOne(req, res) {
          res.status(200).json({ data: "Course not found!" });
       }
    } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: error.message });
    }
 }
 
@@ -70,21 +69,41 @@ async function findBySearch(req, res) {
 
 async function create(req, res) {
    try {
-      let currentCourse = req.body;
-      let createdCourse = await Course.create(currentCourse);
+      let { teacherId } = req.body;
+
+      if (req.user.role == "teacher") {
+         if (teacherId != req.user.id) {
+            return res.status(400).json({ message: "Not allowed" });
+         }
+      }
+
+      let createdCourse = await Course.create(req.body);
       res.status(200).json({ data: createdCourse });
    } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: error.message });
    }
 }
 
 async function update(req, res) {
    try {
       let { id } = req.params;
+
+      let found = await Course.findByPk(id);
+      if (!found) {
+         return res.status(200).json({ message: "Course not found!" });
+      }
+
+      if (req.user.role == "teacher") {
+         if (found.teacherId != req.user.id) {
+            return res.status(400).json({ message: "Not allowed" });
+         }
+      }
+
       let dataBody = req.body;
       let [count] = await Course.update(dataBody, {
          where: { id },
       });
+
       if (count) {
          let updatedCourse = await Course.findByPk(id);
          res.status(200).json({ data: updatedCourse });
@@ -92,7 +111,7 @@ async function update(req, res) {
          res.status(200).json({ message: "Course not found!" });
       }
    } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: error.message });
    }
 }
 
@@ -100,6 +119,13 @@ async function remove(req, res) {
    try {
       let { id } = req.params;
       let currentCourse = await Course.findByPk(id);
+
+      if (req.user.role == "teacher") {
+         if (currentCourse.teacherId != req.user.id) {
+            return res.status(400).json({ message: "Not allowed" });
+         }
+      }
+
       if (currentCourse) {
          await Course.destroy({
             where: { id },
@@ -109,7 +135,7 @@ async function remove(req, res) {
          res.status(200).json({ message: "Course not found!" });
       }
    } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: error.message });
    }
 }
 

@@ -4,3 +4,4 @@ CREATE DATABASE onlineedu;
 SELECT * FROM users
 
 show tables;
+BOOLEAN

@@ -8,4 +8,12 @@ function rolePolice(roles) {
    };
 }
 
-export default rolePolice;
+function creatPolice(roles) {
+   return (req, res, next) => {
+      if (roles.includes(req.user.role)) {
+         return next();
+      }
+      res.status(400).json({ message: "Not allowed." });
+   };
+}
+export { rolePolice, creatPolice };

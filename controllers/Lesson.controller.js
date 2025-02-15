@@ -8,7 +8,6 @@ async function findAll(req, res) {
       res.status(200).json({ data: All });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function findOne(req, res) {
@@ -21,7 +20,6 @@ async function findOne(req, res) {
       res.status(200).json({ data });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function pages(req, res) {
@@ -41,7 +39,6 @@ async function pages(req, res) {
       res.status(200).json({ data });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function findBySeorch(req, res) {
@@ -63,7 +60,6 @@ async function findBySeorch(req, res) {
       res.status(200).json({ data });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function create(req, res) {
@@ -71,7 +67,6 @@ async function create(req, res) {
       let { error, value } = LessonPOST.validate(req.body);
       if (error) {
          res.status(401).json({ message: error.message });
-         console.log(error);
          return;
       }
       let Createdata = await Lesson.create(value);
@@ -83,7 +78,6 @@ async function create(req, res) {
       res.status(200).json({ message: "creyted", data: Createdata });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function update(req, res) {
@@ -94,7 +88,6 @@ async function update(req, res) {
       let { error, value } = LessonPATCH.validate(newData);
       if (error) {
          res.status(401).json({ message: error.message });
-         console.log(error);
          return;
       }
       let [data] = await Lesson.update(value, { where: { id } });
@@ -104,7 +97,6 @@ async function update(req, res) {
       res.status(200).json({ message: "Lesson update" });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 async function remove(req, res) {
@@ -117,7 +109,6 @@ async function remove(req, res) {
       res.status(200).json({ message: "Lesson delete" });
    } catch (e) {
       res.status(401).json({ message: e.message });
-      console.log(e);
    }
 }
 

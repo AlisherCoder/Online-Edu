@@ -3,7 +3,7 @@ import { totp } from "otplib";
 import { config } from "dotenv";
 config();
 
-totp.options = { step: 600, digits: 5 };
+totp.options = { step: 300, digits: 5 };
 const sekretKey = process.env.OTPKEY;
 
 const transport = nodemailer.createTransport({
