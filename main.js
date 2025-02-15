@@ -2,17 +2,21 @@ import express from "express";
 import sequelize from "./config/db.js";
 import { config } from "dotenv";
 import mainRoute from "./routes/index.js";
+import upload from "./config/multer.js";
 config();
 
 const port = process.env.PORT;
 const app = express();
-
 app.use(express.json());
 
 app.use("/api", mainRoute);
 
 app.use("/*", (req, res) => {
    res.status(400).json({ message: "Not found route." });
+});
+
+app.post("/upload", upload.single("file"), (req, res) => {
+   res.send(`Fayl yuklandi: ${req.file.filename}`);
 });
 
 async function Connect() {
