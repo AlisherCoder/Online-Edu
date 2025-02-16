@@ -55,7 +55,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
 async function Connect() {
    try {
       await sequelize.authenticate();
-      // await sequelize.sync({ force: true });
+      await sequelize.sync();
       console.log("Db connected successfully ✅");
       app.listen(port, () => console.log("Server started on port", port));
    } catch (error) {

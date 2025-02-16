@@ -71,9 +71,9 @@ export async function register(req, res) {
       let { email, password } = req.body;
       let user = await User.findOne({ where: { email } });
 
-      if (user) {
-         return res.status(409).json({ message: "User already exists." });
-      }
+      // if (user) {
+      //    return res.status(409).json({ message: "User already exists." });
+      // }
 
       value.password = bcrypt.hashSync(password, 10);
       let c = await User.create(value);
